@@ -1,0 +1,16 @@
+# prettier-ignore
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pre-commit/mirrors-pylint
+    rev: 'v2.3.1'  # Use the sha / tag you want to point at
+    hooks:
+      - id: pylint
+  - repo: https://github.com/pre-commit/mirrors-yapf
+    rev: 'v0.28.0'  # Use the sha / tag you want to point at
+    hooks:
+      - id: yapf
