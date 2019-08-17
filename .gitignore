@@ -127,3 +127,4 @@ dmypy.json
 /.vscode
 .DS_Store
 desktop.ini
+deploy/lsyncd.conf.lua
