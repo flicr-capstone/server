@@ -1,0 +1,7 @@
+/.git
+/.editorconfig
+/.pre-commit-config.yaml
+/.pylintrc
+/server.iml
+/.style.yapf
+/.gitignore
