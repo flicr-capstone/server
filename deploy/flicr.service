@@ -1,0 +1,10 @@
+[Unit]
+Description=Job that runs the flicr daemon
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/server
+ExecStart=/bin/sh -c "FLASK_APP=app.py FLASK_DEBUG=1 /home/pi/venv/bin/flask run"
+
+[Install]
+WantedBy=multi-user.target
