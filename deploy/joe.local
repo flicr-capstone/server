@@ -1,0 +1,22 @@
+server {
+
+    server_name joe.local;
+
+	location / {
+		proxy_pass http://localhost:5000/;
+	}
+
+    listen 443 ssl;
+    include snippets/snakeoil.conf;
+
+}
+server {
+    if ($host = joe.local) {
+        return 301 https://$host$request_uri;
+    }
+
+    server_name joe.local;
+    listen 80;
+    return 404;
+
+}
