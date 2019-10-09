@@ -12,7 +12,6 @@ repos:
       - id: trailing-whitespace
       - id: flake8
       - id: check-merge-conflict
-      - id: name-tests-test
       - id: no-commit-to-branch
       - id: requirements-txt-fixer
   - repo: https://github.com/pre-commit/mirrors-pylint
