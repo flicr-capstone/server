@@ -1,0 +1,10 @@
+[Unit]
+Description=Job that runs the janus daemon
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi
+ExecStart=/opt/janus/bin/janus
+
+[Install]
+WantedBy=multi-user.target
