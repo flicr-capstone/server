@@ -11,6 +11,8 @@ async def triage(ws, _path):
         payload_type = PayloadType(payload["type"])
         if payload_type == PayloadType.GREET:
             await greet(ws, payload["msg"])
+        if payload_type == PayloadType.KEY_EVENT:
+            await receiveKeyEvent(ws, payload["msg"])
 
 
 async def send(ws, payload_type, msg):
@@ -22,6 +24,10 @@ async def greet(ws, greeting):
     response = {"greeting": f"Hello {greeting['name']}!"}
     await send(ws, PayloadType.GREET, response)
     print(f"> {response}")
+
+
+async def receiveKeyEvent(_ws, keyEvent):
+    print(f"< {keyEvent}")
 
 
 def run():
