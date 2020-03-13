@@ -14,4 +14,4 @@ systemctl start $services
 cp deploy/joe.local /etc/nginx/sites-available
 ln -s ../sites-available/joe.local /etc/nginx/sites-enabled/joe.local
 systemctl restart nginx
-systemctl status nginx
+echo Done

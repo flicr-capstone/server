@@ -2,6 +2,10 @@ server {
 
     server_name joe.local;
 
+    location /janus {
+        proxy_pass http://localhost:8088/janus;
+    }
+
 	location / {
 		proxy_pass http://localhost:5000/;
 	}
@@ -11,6 +15,7 @@ server {
     ssl_certificate_key /etc/ssl/private/flicr.key;
 
 }
+
 server {
     if ($host = joe.local) {
         return 301 https://$host$request_uri;
