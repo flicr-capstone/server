@@ -3,6 +3,9 @@ import json
 import websockets
 
 from .payloadtype import PayloadType
+from .uart import Uart
+
+uart = None
 
 
 async def triage(ws, _path):
@@ -28,10 +31,13 @@ async def greet(ws, greeting):
 
 async def receiveKeyEvent(_ws, keyEvent):
     print(f"< {keyEvent}")
+    uart.write_str_ln(keyEvent)
 
 
 def run():
     print("Starting WebSocket Server")
-    start_server = websockets.serve(triage, "localhost", 8080)
+    global uart
+    uart = Uart()
+    start_server = websockets.serve(triage, "0.0.0.0", 8080)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
