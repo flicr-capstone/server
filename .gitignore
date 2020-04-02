@@ -128,3 +128,4 @@ dmypy.json
 .DS_Store
 desktop.ini
 deploy/lsyncd.conf.lua
+/SGVHAK_Rover

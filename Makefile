@@ -2,7 +2,7 @@ deploy:
 	lsyncd deploy/lsyncd.conf.lua
 
 run:
-	. venv/bin/activate && python main.py
+	. venv/bin/activate && PYTHONPATH="SGVHAK_Rover:SGVHAK_Rover/SGVHAK_Rover" python main.py
 
 install:
 	sudo bash deploy/install.sh

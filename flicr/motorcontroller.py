@@ -1,17 +1,74 @@
-import itertools
-import serial
+import struct
+from SGVHAK_Rover.lewansoul_wrapper import lewansoul_wrapper as LewanSoulWrapper
+
+KEY_UP = "keyup"
+KEY_DOWN = "keydown"
+
+KEY_W = "KeyW"
+KEY_S = "KeyS"
+KEY_A = "KeyA"
+KEY_D = "KeyD"
+
+DRIVE_IDS = [20, 21, 22]
+TURN_FRONT_ID = 23
+TURN_BACK_ID = 24
 
 
 class MotorController:
-    def __init__(self, port, baud_rate=9600):
-        try:
-            self.connection = serial.Serial(port, baud_rate)
-        except Exception as e:
-            raise Exception(f"Error opening port {port} Error: {e}")
+    _instance = None
 
-    # Arguments to build packet -> Number of bytes written (int)
-    def write(self, header, num_id, length, cmd, params, checksum):
-        args = list(header, num_id, length, cmd, params, checksum)
-        flattened_args = list(itertools.chain.from_iterable(args))
-        data = bytearray(flattened_args)
-        return self.connection.write(data)
+    def __init__(self):
+        self.axial = 0
+        self.lateral = 0
+        self.lsw = LewanSoulWrapper()
+        self.lsw.connect()
+        self.lsw.send(TURN_FRONT_ID, 29, (0, 0, 0, 0))
+        self.lsw.send(TURN_BACK_ID, 29, (0, 0, 0, 0))
+
+    @staticmethod
+    def get_instance():
+        if MotorController._instance is None:
+            MotorController._instance = MotorController()
+        return MotorController._instance
+
+    def triage_key_event(self, key_event):
+        axial_movement = 0
+        lateral_movement = 0
+
+        if key_event["code"] == KEY_W:
+            axial_movement = 1
+        elif key_event["code"] == KEY_S:
+            axial_movement = -1
+        elif key_event["code"] == KEY_A:
+            lateral_movement = -1
+        elif key_event["code"] == KEY_D:
+            lateral_movement = 1
+
+        if key_event["type"] == KEY_UP:
+            axial_movement *= -1
+            lateral_movement *= -1
+
+        self.axial += axial_movement
+        self.lateral += lateral_movement
+        print(f"Axial {axial_movement}, Lateral {lateral_movement}")
+        self.send_commands()
+
+    def send_commands(self):
+        for i in DRIVE_IDS:
+            self.lsw.send(i, 29, bytearray(struct.pack("hh", 1, 500 * self.axial)))
+        self.lsw.send(
+            TURN_FRONT_ID,
+            1,
+            bytearray(struct.pack("hh", 500 + 100 * self.lateral, 500)),
+        )
+        self.lsw.send(
+            TURN_BACK_ID,
+            1,
+            bytearray(struct.pack("hh", 500 + 100 * -self.lateral, 500)),
+        )
+
+    def unload(self):
+        for i in DRIVE_IDS:
+            self.lsw.send(i, 31, (0,))
+        self.lsw.send(TURN_FRONT_ID, 31, (0,))
+        self.lsw.send(TURN_BACK_ID, 31, (0,))
