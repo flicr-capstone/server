@@ -1,0 +1,3 @@
+[submodule "SGVHAK_Rover"]
+	path = SGVHAK_Rover
+	url = git@github.com:Roger-random/SGVHAK_Rover.git
