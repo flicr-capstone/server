@@ -1,0 +1,10 @@
+[Unit]
+Description=Job that runs the gstreamer daemon
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi
+ExecStart=/bin/sh -c "gst-launch-1.0 -e v4l2src device=/dev/video2 ! videoconvert ! video/x-raw,width=544,height=288,framerate=10/1 ! v4l2h264enc ! h264parse ! rtph264pay config-interval=1 pt=96 ! udpsink host=127.0.0.1 port=8005"
+
+[Install]
+WantedBy=multi-user.target

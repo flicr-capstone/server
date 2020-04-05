@@ -4,7 +4,7 @@ Description=Job that runs the flicr daemon
 [Service]
 Type=simple
 WorkingDirectory=/home/pi/server
-ExecStart=/bin/sh -c "FLASK_APP=app.py FLASK_DEBUG=1 /home/pi/venv/bin/flask run"
+ExecStart=/bin/sh -c '. venv/bin/activate && PYTHONPATH="SGVHAK_Rover:SGVHAK_Rover/SGVHAK_Rover" python main.py'
 
 [Install]
 WantedBy=multi-user.target

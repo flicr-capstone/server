@@ -4,7 +4,8 @@ if [[ "$EUID" -ne 0 ]]
   then echo "Please run with sudo"
   exit
 fi
-services="flicr gstreamer janus"
+cp deploy/janus.plugin.streaming.jcfg /opt/janus/etc/janus
+services="flicr gstreamer1 gstreamer2 janus"
 systemctl stop $services
 cp deploy/*.service /lib/systemd/system
 systemctl daemon-reload
